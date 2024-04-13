@@ -1,23 +1,52 @@
 import React, { useState } from 'react';
 import './submit.css';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Submit() {
-  const [name, setName] = useState('');
-  const [idNumber, setIdNumber] = useState('');
-  const [gender, setGender] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [location, setLocation] = useState('');
-  const [incidentDescription, setIncidentDescription] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    idNumber: '',
+    gender: '',
+    phoneNumber: '',
+    location: '',
+    incidentDescription: ''
+  });
 
-  const handleSubmit = (event) => {
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission here
-    console.log(`Name: ${name}`);
-    console.log(`ID Number: ${idNumber}`);
-    console.log(`Gender: ${gender}`);
-    console.log(`Phone Number: ${phoneNumber}`);
-    console.log(`Location: ${location}`);
-    console.log(`Incident Description: ${incidentDescription}`);
+    try {
+      const response = await axios.post('http://localhost:3007/createcase', formData);
+
+      console.log(response.data);
+
+      // Display success message
+      toast.success('Form submitted successfully!', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+      });
+
+      // Reset form data
+      setFormData({
+        name: '',
+        idNumber: '',
+        gender: '',
+        phoneNumber: '',
+        location: '',
+        incidentDescription: ''
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
   return (
@@ -26,15 +55,15 @@ function Submit() {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Name:</label>
-          <input type="text" id="name" value={name} onChange={(event) => setName(event.target.value)} />
+          <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} />
         </div>
         <div>
           <label htmlFor="idNumber">ID Number:</label>
-          <input type="text" id="idNumber" value={idNumber} onChange={(event) => setIdNumber(event.target.value)} />
+          <input type="text" id="idNumber" name="idNumber" value={formData.idNumber} onChange={handleChange} />
         </div>
         <div>
           <label htmlFor="gender">Gender:</label>
-          <select id="gender" value={gender} onChange={(event) => setGender(event.target.value)}>
+          <select id="gender" name="gender" value={formData.gender} onChange={handleChange}>
             <option value="">-- Select --</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
@@ -43,18 +72,19 @@ function Submit() {
         </div>
         <div>
           <label htmlFor="phoneNumber">Phone Number:</label>
-          <input type="tel" id="phoneNumber" value={phoneNumber} onChange={(event) => setPhoneNumber(event.target.value)} pattern="[0-9]{10}" maxLength="10" />
+          <input type="tel" id="phoneNumber" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} pattern="[0-9]{10}" maxLength="10" />
         </div>
         <div>
           <label htmlFor="location">Location:</label>
-          <input type="text" id="location" value={location} onChange={(event) => setLocation(event.target.value)} />
+          <input type="text" id="location" name="location" value={formData.location} onChange={handleChange} />
         </div>
         <div>
           <label htmlFor="incidentDescription">Incident Description:</label>
-          <textarea id="incidentDescription" value={incidentDescription} onChange={(event) => setIncidentDescription(event.target.value)} />
+          <textarea id="incidentDescription" name="incidentDescription" value={formData.incidentDescription} onChange={handleChange} />
         </div>
         <button type="submit">Submit</button>
       </form>
+      <ToastContainer />
     </div>
   );
 }
