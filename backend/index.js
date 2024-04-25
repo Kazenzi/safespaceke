@@ -70,7 +70,8 @@ let menu = new UssdMenu();
 let dataToSave = {};
 
 const atCredentials = {
-  
+  apiKey: "21671896cf1cc083a2379966f585cf0b9e81062c17d63dae77e89ffefc01cf11",
+  username: "jeezz",
 };
 
 const AfricasTalking = require("africastalking")(atCredentials);
@@ -197,4 +198,10 @@ menu.state("Incident_descprition", {
 
     menu.end("Safespaceke where one feels secure ");
   },
+});
+
+app.post("/ussd", (req, res) => {
+  menu.run(req.body, (ussdResult) => {
+    res.send(ussdResult);
+  });
 });
