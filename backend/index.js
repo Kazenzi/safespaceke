@@ -70,7 +70,7 @@ let menu = new UssdMenu();
 let dataToSave = {};
 
 const atCredentials = {
-  apiKey: "21671896cf1cc083a2379966f585cf0b9e81062c17d63dae77e89ffefc01cf11",
+  apiKey: "f67d02820dd41de9ff407657b1b307dbf65f044bd3810f4b8ca3357a89e5f0d0",
   username: "jeezz",
 };
 
@@ -142,10 +142,10 @@ menu.state("Gender", {
     dataToSave.Gender = Gender;
     console.log(dataToSave);
 
-    menu.con("Incident_descprition ");
+    menu.con("Incident_location ");
   },
   next: {
-    "*[a-zA-Z]+": "Incident_descprition",
+    "*[a-zA-Z]+": "Incident_location",
   },
 });
 
@@ -172,7 +172,7 @@ menu.state("Incident_descprition", {
     // Save the data to the MySQL database
     const sql ='INSERT INTO reportedcase (FullNames, IDNumber, PhoneNumber, location, Incidentdesc,Gender ) VALUES (?, ?, ?, ?, ?,?)'
     
-    const values = [dataToSave.name,dataToSave.ID_Number, dataToSave.phoneNumber, dataToSave.Incident_descprition, dataToSave.Gender ];
+    const values = [dataToSave.name,dataToSave.ID_Number, dataToSave.phoneNumber, dataToSave.Incident_location,dataToSave.Incident_descprition, dataToSave.Gender ];
 
     db.query(sql, values, (err, result) => {
       if (err) {
