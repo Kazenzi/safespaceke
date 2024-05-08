@@ -69,10 +69,7 @@ let menu = new UssdMenu();
 
 let dataToSave = {};
 
-const atCredentials = {
-  apiKey: "f67d02820dd41de9ff407657b1b307dbf65f044bd3810f4b8ca3357a89e5f0d0",
-  username: "jeezz",
-};
+
 
 const AfricasTalking = require("africastalking")(atCredentials);
 
